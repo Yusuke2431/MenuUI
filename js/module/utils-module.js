@@ -136,8 +136,8 @@ export function clearElement(element) {
  * @returns {string} 画像パス
  */
 export function getImagePath(itemName) {
-    // モジュールファイルから見た相対パス
-    return `../../Full Screenshot/${itemName}.png`;
+    // HTMLファイルからの相対パス（ブラウザでの実行時基準）
+    return `Full Screenshot/${itemName}.png`;
 }
 
 /**
