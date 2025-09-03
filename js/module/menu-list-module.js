@@ -4,7 +4,7 @@
  */
 
 import { navigationData, favoriteMenus } from './data-module.js';
-import { clearElement, isRecommendedFeature, isNewFeature } from './utils-module.js';
+import { clearElement, isRecommendedFeature, isNewFeature, getImagePath } from './utils-module.js';
 import { createMenuCard, updateContentAreaSettings, updateTopNavActiveState } from './page-navigation-module.js';
 import { renderSideNav } from './side-nav-module.js';
 
@@ -139,7 +139,7 @@ function renderFavoritesPage(contentArea) {
             // カード内容を設定
             card.innerHTML = `
                 <div class="card-image">
-                    <img src="../../Full Screenshot/${menu.name}.png" alt="${menu.name}">
+                    <img src="${getImagePath(menu.name)}" alt="${menu.name}">
                     ${isRecommended ? '<div class="recommended-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important;">おすすめ機能</div>' : ''}
                     ${isNew ? '<div class="new-feature-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important;">新機能</div>' : ''}
                 </div>
@@ -207,7 +207,7 @@ function renderDashboardPage(contentArea) {
     // ダッシュボードの内容を表示（z-indexを設定して、サイドナビゲーションを突き抜けないようにする）
     contentArea.innerHTML = `
         <div style="position: relative; z-index: 1;">
-            <img src="../../Full Screenshot/メインダッシュボード.png" alt="メインダッシュボード" style="width: 100%; border-radius: 8px;">
+            <img src="${getImagePath('メインダッシュボード')}" alt="メインダッシュボード" style="width: 100%; border-radius: 8px;">
         </div>
     `;
 }

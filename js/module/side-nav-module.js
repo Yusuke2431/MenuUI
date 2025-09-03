@@ -14,7 +14,8 @@ import {
     isRecommendedFeature, 
     createElement, 
     addEventListeners, 
-    clearElement 
+    clearElement,
+    getImagePath 
 } from './utils-module.js';
 import { 
     isFeatureRestricted, 
@@ -549,7 +550,7 @@ function navigateToDashboardPage(dashboardName) {
     
     contentArea.innerHTML = `
         <div style="position: relative; z-index: 1;">
-            <img src="../../Full Screenshot/${imagePath}.png" alt="${dashboardName}" style="width: 100%; border-radius: 8px;">
+            <img src="${getImagePath(imagePath)}" alt="${dashboardName}" style="width: 100%; border-radius: 8px;">
         </div>
     `;
     

@@ -3,7 +3,7 @@
  * ページ遷移と制限機能のオーバーレイ表示に関する機能
  */
 
-import { clearElement, isRecommendedFeature, isNewFeature } from './utils-module.js';
+import { clearElement, isRecommendedFeature, isNewFeature, getImagePath } from './utils-module.js';
 import { getMenuDescription } from './data-module.js';
 import { isFeatureRestricted, createRestrictionOverlay, applyCardRestrictionStyle } from './plan-restriction-module.js';
 
@@ -53,7 +53,7 @@ export function navigateToPage(topNavKey, category, item) {
     imgContainer.style.zIndex = '1';
     
     const img = document.createElement('img');
-    img.src = `../../Full Screenshot/${item}.png`;
+    img.src = getImagePath(item);
     img.alt = item;
     img.style.width = '100%';
     img.style.borderRadius = '8px';
@@ -173,7 +173,7 @@ export function createMenuCard(topNavKey, category, item) {
     // カード内容を設定
     card.innerHTML = `
         <div class="card-image">
-            <img src="../../Full Screenshot/${item}.png" alt="${item}">
+            <img src="${getImagePath(item)}" alt="${item}">
             ${isRecommended ? '<div class="recommended-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important;">おすすめ機能</div>' : ''}
             ${isNew ? '<div class="new-feature-badge" style="display: block !important; visibility: visible !important; opacity: 1 !important;">新機能</div>' : ''}
         </div>
