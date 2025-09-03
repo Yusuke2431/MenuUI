@@ -4,7 +4,7 @@
  */
 
 import { clearElement, isRecommendedFeature, isNewFeature, getImagePath } from './utils-module.js';
-import { getMenuDescription } from './data-module.js';
+import { getMenuDescription, favoriteMenus } from './data-module.js';
 import { isFeatureRestricted, createRestrictionOverlay, applyCardRestrictionStyle } from './plan-restriction-module.js';
 
 /**
@@ -47,10 +47,58 @@ export function navigateToPage(topNavKey, category, item) {
     // 背景色を白に設定
     document.body.style.background = '#FFFFFF';
     
+    // ページヘッダー（タイトル+お気に入りボタン）を作成
+    const pageHeader = document.createElement('div');
+    pageHeader.style.position = 'relative';
+    pageHeader.style.zIndex = '10';
+    pageHeader.style.padding = '20px 40px';
+    pageHeader.style.backgroundColor = 'white';
+    pageHeader.style.borderBottom = '1px solid #e0e0e0';
+    pageHeader.style.display = 'flex';
+    pageHeader.style.justifyContent = 'space-between';
+    pageHeader.style.alignItems = 'center';
+    
+    // ページタイトル
+    const title = document.createElement('h1');
+    title.textContent = item;
+    title.style.margin = '0';
+    title.style.fontSize = '24px';
+    title.style.fontWeight = '600';
+    
+    // お気に入りボタン
+    const favoriteButton = document.createElement('button');
+    favoriteButton.className = 'favorite-button';
+    favoriteButton.style.background = 'none';
+    favoriteButton.style.border = 'none';
+    favoriteButton.style.cursor = 'pointer';
+    favoriteButton.style.fontSize = '24px';
+    favoriteButton.style.padding = '8px';
+    favoriteButton.style.borderRadius = '4px';
+    favoriteButton.style.transition = 'all 0.2s ease';
+    favoriteButton.style.position = 'relative';
+    favoriteButton.style.zIndex = '20';
+    
+    // お気に入り状態を確認（仮の実装）
+    const isFavorite = checkIfFavorite(item);
+    favoriteButton.innerHTML = `<i class="fas fa-star" style="color: ${isFavorite ? '#FFB400' : '#ccc'}"></i>`;
+    favoriteButton.title = isFavorite ? 'お気に入りから削除' : 'お気に入りに追加';
+    
+    // クリックイベント
+    favoriteButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleFavorite(item, this);
+    });
+    
+    // ヘッダーを組み立て
+    pageHeader.appendChild(title);
+    pageHeader.appendChild(favoriteButton);
+    contentArea.appendChild(pageHeader);
+    
     // 画像を表示（z-indexを設定して、サイドナビゲーションを突き抜けないようにする）
     const imgContainer = document.createElement('div');
     imgContainer.style.position = 'relative';
     imgContainer.style.zIndex = '1';
+    imgContainer.style.padding = '0 40px 40px';
     
     const img = document.createElement('img');
     img.src = getImagePath(item);
@@ -195,4 +243,59 @@ export function createMenuCard(topNavKey, category, item) {
     }
     
     return card;
+}
+
+/**
+ * お気に入り状態をチェックする関数
+ * @param {string} itemName - 機能名
+ * @returns {boolean} お気に入りかどうか
+ */
+function checkIfFavorite(itemName) {
+    // favoriteMenusからチェック（実際の実装）
+    return favoriteMenus.some(menu => menu.name === itemName);
+}
+
+/**
+ * お気に入り状態を切り替える関数
+ * @param {string} itemName - 機能名
+ * @param {HTMLElement} button - ボタン要素
+ */
+function toggleFavorite(itemName, button) {
+    const isFavorite = checkIfFavorite(itemName);
+    const starIcon = button.querySelector('i');
+    
+    if (isFavorite) {
+        // お気に入りから削除
+        starIcon.style.color = '#ccc';
+        button.title = 'お気に入りに追加';
+        
+        // favoriteMenusから削除（実際の実装では永続化も必要）
+        const index = favoriteMenus.findIndex(menu => menu.name === itemName);
+        if (index !== -1) {
+            favoriteMenus.splice(index, 1);
+        }
+        
+        console.log(`${itemName} をお気に入りから削除しました`);
+    } else {
+        // お気に入りに追加
+        starIcon.style.color = '#FFB400';
+        button.title = 'お気に入りから削除';
+        
+        // favoriteMenusに追加（実際の実装では永続化も必要）
+        favoriteMenus.push({
+            name: itemName,
+            description: `${itemName}の詳細情報を表示します。`
+        });
+        
+        console.log(`${itemName} をお気に入りに追加しました`);
+    }
+    
+    // ホバー効果
+    button.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.1)';
+    });
+    
+    button.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+    });
 }
