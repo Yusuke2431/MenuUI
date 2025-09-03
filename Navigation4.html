@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Findy ナビゲーション</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/navigation4.css">
+</head>
+<body>
+    <!-- トップナビゲーション -->
+    <nav class="top-nav">
+        <div class="top-nav-left">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                Findy
+            </div>
+    <div class="top-nav-items">
+        <div class="top-nav-item" data-key="dashboard">ダッシュボード</div>
+        <div class="top-nav-item active" data-key="team">チーム</div>
+        <div class="top-nav-item" data-key="member">メンバー</div>
+        <div class="top-nav-item" data-key="project">プロジェクト</div>
+        <div class="top-nav-item" data-key="organization">経営</div>
+        <div class="top-nav-item" data-key="settings">設定</div>
+        <div class="top-nav-item" data-key="favorites">お気に入り</div>
+    </div>
+        </div>
+        <div class="top-nav-right">
+            <div class="icon-button" title="アカウント">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="icon-button" title="お知らせ">
+                <i class="fas fa-bell"></i>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="main-container">
+        <!-- サイドナビゲーション -->
+        <nav class="side-nav" id="side-nav">
+            <!-- サイドナビゲーションの内容はJavaScriptで動的に生成 -->
+        </nav>
+        
+        <!-- サイドナビゲーション開閉ボタン -->
+        <div class="side-nav-toggle" id="side-nav-toggle" aria-label="メニューを小さく表示" aria-controls="side-nav" data-menu-open="true">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#1E7ED5" d="M3,5.75h9c.41,0,.75-.34.75-.75s-.34-.75-.75-.75H3c-.41,0-.75.34-.75.75s.34.75.75.75Z"></path>
+                <path fill="#1E7ED5" d="M3,10.75h7c.41,0,.75-.34.75-.75s-.34-.75-.75-.75H3c-.41,0-.75.34-.75.75s.34.75.75.75Z"></path>
+                <path fill="#1E7ED5" d="M12,14.25H3c-.41,0-.75.34-.75.75s.34.75.75.75h9c.41,0,.75-.34.75-.75s-.34-.75-.75-.75Z"></path>
+                <path fill="#1E7ED5" d="M14.06,10l3.47-3.47c.29-.29.29-.77,0-1.06s-.77-.29-1.06,0l-4,4c-.29.29-.29.77,0,1.06l4,4c.15.15.34.22.53.22s.38-.07.53-.22c.29-.29.29-.77,0-1.06l-3.47-3.47Z"></path>
+            </svg>
+        </div>
+        
+        <!-- メインコンテンツ -->
+        <div class="content" id="content">
+            <div id="content-area">
+                <!-- コンテンツがここに表示される -->
+                <p>左側のメニューから項目を選択してください。</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
