@@ -98,5 +98,4 @@ function toggleSideNav() {
     content.style.marginLeft = isOpen ? '' : '0';
 }
 
-// DOMContentLoaded イベントでアプリケーションを初期化
-document.addEventListener('DOMContentLoaded', initializeApp);
+
