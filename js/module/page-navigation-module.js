@@ -47,38 +47,34 @@ export function navigateToPage(topNavKey, category, item) {
     // 背景色を白に設定
     document.body.style.background = '#FFFFFF';
     
-    // ページヘッダー（タイトル+お気に入りボタン）を作成
-    const pageHeader = document.createElement('div');
-    pageHeader.style.position = 'relative';
-    pageHeader.style.zIndex = '10';
-    pageHeader.style.padding = '20px 40px';
-    pageHeader.style.backgroundColor = 'white';
-    pageHeader.style.borderBottom = '1px solid #e0e0e0';
-    pageHeader.style.display = 'flex';
-    pageHeader.style.justifyContent = 'space-between';
-    pageHeader.style.alignItems = 'center';
+    // 画像を表示（z-indexを設定して、サイドナビゲーションを突き抜けないようにする）
+    const imgContainer = document.createElement('div');
+    imgContainer.style.position = 'relative';
+    imgContainer.style.zIndex = '1';
+    imgContainer.style.padding = '40px';
     
-    // ページタイトル
-    const title = document.createElement('h1');
-    title.textContent = item;
-    title.style.margin = '0';
-    title.style.fontSize = '24px';
-    title.style.fontWeight = '600';
-    
-    // お気に入りボタン
+    // お気に入りボタンを画像上に重ねて配置
     const favoriteButton = document.createElement('button');
     favoriteButton.className = 'favorite-button';
-    favoriteButton.style.background = 'none';
-    favoriteButton.style.border = 'none';
+    favoriteButton.style.position = 'absolute';
+    favoriteButton.style.top = '50px'; // paddingを考慮
+    favoriteButton.style.right = '50px'; // paddingを考慮
+    favoriteButton.style.background = 'rgba(255, 255, 255, 0.9)';
+    favoriteButton.style.border = '1px solid #e0e0e0';
     favoriteButton.style.cursor = 'pointer';
-    favoriteButton.style.fontSize = '24px';
+    favoriteButton.style.fontSize = '20px';
     favoriteButton.style.padding = '8px';
-    favoriteButton.style.borderRadius = '4px';
+    favoriteButton.style.borderRadius = '50%';
+    favoriteButton.style.width = '40px';
+    favoriteButton.style.height = '40px';
+    favoriteButton.style.display = 'flex';
+    favoriteButton.style.alignItems = 'center';
+    favoriteButton.style.justifyContent = 'center';
     favoriteButton.style.transition = 'all 0.2s ease';
-    favoriteButton.style.position = 'relative';
-    favoriteButton.style.zIndex = '20';
+    favoriteButton.style.zIndex = '10';
+    favoriteButton.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
     
-    // お気に入り状態を確認（仮の実装）
+    // お気に入り状態を確認
     const isFavorite = checkIfFavorite(item);
     favoriteButton.innerHTML = `<i class="fas fa-star" style="color: ${isFavorite ? '#FFB400' : '#ccc'}"></i>`;
     favoriteButton.title = isFavorite ? 'お気に入りから削除' : 'お気に入りに追加';
@@ -89,16 +85,16 @@ export function navigateToPage(topNavKey, category, item) {
         toggleFavorite(item, this);
     });
     
-    // ヘッダーを組み立て
-    pageHeader.appendChild(title);
-    pageHeader.appendChild(favoriteButton);
-    contentArea.appendChild(pageHeader);
+    // ホバー効果
+    favoriteButton.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.1)';
+        this.style.background = 'rgba(255, 255, 255, 1)';
+    });
     
-    // 画像を表示（z-indexを設定して、サイドナビゲーションを突き抜けないようにする）
-    const imgContainer = document.createElement('div');
-    imgContainer.style.position = 'relative';
-    imgContainer.style.zIndex = '1';
-    imgContainer.style.padding = '0 40px 40px';
+    favoriteButton.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+        this.style.background = 'rgba(255, 255, 255, 0.9)';
+    });
     
     const img = document.createElement('img');
     img.src = getImagePath(item);
@@ -106,8 +102,9 @@ export function navigateToPage(topNavKey, category, item) {
     img.style.width = '100%';
     img.style.borderRadius = '8px';
     
-    // 画像をコンテナに追加し、コンテナをコンテンツエリアに追加
+    // 画像とボタンをコンテナに追加し、コンテナをコンテンツエリアに追加
     imgContainer.appendChild(img);
+    imgContainer.appendChild(favoriteButton);
     contentArea.appendChild(imgContainer);
     
     // 制限機能の場合はオーバーレイを表示
@@ -289,13 +286,4 @@ function toggleFavorite(itemName, button) {
         
         console.log(`${itemName} をお気に入りに追加しました`);
     }
-    
-    // ホバー効果
-    button.addEventListener('mouseenter', function() {
-        this.style.transform = 'scale(1.1)';
-    });
-    
-    button.addEventListener('mouseleave', function() {
-        this.style.transform = 'scale(1)';
-    });
 }
