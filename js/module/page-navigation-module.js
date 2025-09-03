@@ -6,6 +6,7 @@
 import { clearElement, isRecommendedFeature, isNewFeature, getImagePath } from './utils-module.js';
 import { getMenuDescription, favoriteMenus } from './data-module.js';
 import { isFeatureRestricted, createRestrictionOverlay, applyCardRestrictionStyle } from './plan-restriction-module.js';
+import { renderMenuListPage } from './menu-list-module.js';
 
 /**
  * 特定のページに遷移する関数
@@ -82,7 +83,7 @@ export function navigateToPage(topNavKey, category, item) {
     // クリックイベント
     favoriteButton.addEventListener('click', function(e) {
         e.stopPropagation();
-        toggleFavorite(item, this);
+        toggleFavorite(item, this, topNavKey, category);
     });
     
     // ホバー効果
@@ -256,8 +257,10 @@ function checkIfFavorite(itemName) {
  * お気に入り状態を切り替える関数
  * @param {string} itemName - 機能名
  * @param {HTMLElement} button - ボタン要素
+ * @param {string} topNavKey - トップナビゲーションキー
+ * @param {string} category - カテゴリー名
  */
-function toggleFavorite(itemName, button) {
+function toggleFavorite(itemName, button, topNavKey, category) {
     const isFavorite = checkIfFavorite(itemName);
     const starIcon = button.querySelector('i');
     
@@ -266,7 +269,7 @@ function toggleFavorite(itemName, button) {
         starIcon.style.color = '#ccc';
         button.title = 'お気に入りに追加';
         
-        // favoriteMenusから削除（実際の実装では永続化も必要）
+        // favoriteMenusから削除
         const index = favoriteMenus.findIndex(menu => menu.name === itemName);
         if (index !== -1) {
             favoriteMenus.splice(index, 1);
@@ -278,12 +281,34 @@ function toggleFavorite(itemName, button) {
         starIcon.style.color = '#FFB400';
         button.title = 'お気に入りから削除';
         
-        // favoriteMenusに追加（実際の実装では永続化も必要）
+        // favoriteMenusに完全な情報で追加
         favoriteMenus.push({
             name: itemName,
-            description: `${itemName}の詳細情報を表示します。`
+            category: category,
+            topNavKey: topNavKey,
+            description: getMenuDescription(itemName) || `${itemName}の詳細情報を表示します。`,
+            icon: "fa-star" // デフォルトアイコン
         });
         
         console.log(`${itemName} をお気に入りに追加しました`);
     }
+    
+    // 現在お気に入りページが表示されている場合は再レンダリング
+    // 複数の方法でお気に入りページの状態を確認
+    const isFavoritesPageActive = 
+        document.querySelector('.top-nav-item.active')?.textContent?.includes('お気に入り') ||
+        document.querySelector('.top-nav-item[data-nav="favorites"].active') ||
+        document.querySelector('#content-area .page-title')?.textContent?.includes('お気に入り');
+    
+    if (isFavoritesPageActive) {
+        setTimeout(() => refreshFavoritesPage(), 100); // 少し遅延させて確実に実行
+    }
+}
+
+/**
+ * お気に入りページを再レンダリングする関数
+ */
+function refreshFavoritesPage() {
+    console.log('お気に入りページを再レンダリング中...');
+    renderMenuListPage('favorites');
 }
