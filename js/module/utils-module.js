@@ -136,8 +136,10 @@ export function clearElement(element) {
  * @returns {string} 画像パス
  */
 export function getImagePath(itemName) {
-    // HTMLファイルからの相対パス（ブラウザでの実行時基準）
-    return `Full Screenshot/${itemName}.png`;
+    // HTMLファイルからの相対パス（スペースと日本語文字をURLエンコード）
+    const dirName = encodeURIComponent('Full Screenshot');
+    const fileName = encodeURIComponent(itemName);
+    return `${dirName}/${fileName}.png`;
 }
 
 /**
