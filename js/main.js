@@ -3,10 +3,13 @@
  * シンプルな初期化版
  */
 
-// 基本的な初期化
-document.addEventListener('DOMContentLoaded', function() {
+// 基本的な初期化（即座に実行）
+(function() {
+    console.log('JavaScript実行開始');
+    
     // サイドナビゲーションを表示
     const sideNav = document.getElementById('side-nav');
+    console.log('サイドナビ要素:', sideNav);
     if (sideNav) {
         sideNav.innerHTML = `
             <div style="padding: 20px;">
@@ -38,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // メインコンテンツエリアを表示
     const contentArea = document.getElementById('content-area');
+    console.log('コンテンツエリア要素:', contentArea);
     if (contentArea) {
         contentArea.innerHTML = `
             <div style="padding: 40px;">
@@ -62,7 +66,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // トップナビゲーションのクリックイベント
-    document.querySelectorAll('.top-nav-item').forEach(item => {
+    const topNavItems = document.querySelectorAll('.top-nav-item');
+    console.log('トップナビ要素数:', topNavItems.length);
+    topNavItems.forEach(item => {
         item.addEventListener('click', function() {
             // アクティブ状態を更新
             document.querySelectorAll('.top-nav-item').forEach(i => i.classList.remove('active'));
@@ -77,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         });
     });
-});
+})();
 
 // コンテンツ表示用の関数
 window.showContent = function(title) {
